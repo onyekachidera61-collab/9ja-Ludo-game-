@@ -132,15 +132,6 @@ body {
 .home-green  { background: var(--green); }
 .home-yellow { background: var(--yellow); }
 
-/* Inner circle for the 6×6 corner area overlay */
-/* We create a pseudo-element circle inside the middle of each corner */
-.home-base.home-red[data-row="2"][data-col="2"],
-.home-base.home-blue[data-row="2"][data-col="12"],
-.home-base.home-green[data-row="12"][data-col="12"],
-.home-base.home-yellow[data-row="12"][data-col="2"] {
-  /* center of each 6x6 corner – visual circle via box-shadow on the 4 nest cells region */
-}
-
 /* Nest cells – slots where home tokens sit */
 .home-nest {
   border-radius: 50%;

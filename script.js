@@ -53,8 +53,8 @@ const YELLOW_PATH = [
 
 const PATHS = { red: RED_PATH, blue: BLUE_PATH, green: GREEN_PATH, yellow: YELLOW_PATH };
 
-// Outer track length (indices 0–50)
-const OUTER_LEN = 51;
+// Number of outer-track positions (indices 0–50); also the start of home-stretch
+const OUTER_COUNT = 51;
 // Position index of the finished/center cell
 const FINISH_POS = 57;
 
@@ -216,7 +216,7 @@ function getSelectableTokens(player, dice) {
 // ── Capture logic ──────────────────────────────────────────
 function checkCapture(player, token) {
   // Captures only possible on outer track (pos 0–50)
-  if (token.pos < 0 || token.pos >= OUTER_LEN) return;
+  if (token.pos < 0 || token.pos >= OUTER_COUNT) return;
 
   const [row, col] = PATHS[player][token.pos];
   if (isSafeCell(row, col)) return; // safe zone
@@ -224,7 +224,7 @@ function checkCapture(player, token) {
   for (const other of PLAYERS) {
     if (other === player) continue;
     for (const ot of gs.tokens[other]) {
-      if (ot.pos < 0 || ot.pos >= OUTER_LEN) continue;
+      if (ot.pos < 0 || ot.pos >= OUTER_COUNT) continue;
       const [or, oc] = PATHS[other][ot.pos];
       if (or === row && oc === col) {
         ot.pos = -1;
@@ -336,7 +336,6 @@ async function handleRoll() {
   if (selectable.length === 0) {
     addLog('No valid moves for ' + PLAYER_NAMES[gs.currentPlayer] + '. Skipping.');
     await sleep(800);
-    if (value !== 6) gs.consecutiveSixes = 0;
     nextPlayer();
     return;
   }
@@ -397,7 +396,6 @@ async function handleTokenClick(player, tokenId) {
     updateTurnUI();
     enableRollBtn();
   } else {
-    gs.consecutiveSixes = 0;
     nextPlayer();
   }
 }
